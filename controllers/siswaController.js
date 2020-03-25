@@ -12,9 +12,9 @@ var connection = require('../utils/connection');
 // |- Hapus Data
 // |- Custom Data
 
-// LIST DATA PENGGUNA
+// LIST DATA PEGAWAI
 exports.List = function (req, res) {
-    connection.query('SELECT * FROM pengguna', function (error, rows, fields) {
+    connection.query('SELECT * FROM siswa', function (error, rows, fields) {
         if (error) {
             response.servererror(console.log(error), res)
         } else {
@@ -23,17 +23,15 @@ exports.List = function (req, res) {
     });
 };
 
-//DETAIL DATA
+// DETAIL DATA PEGAWAI
 exports.Detail = function (req, res) {
+    var nis = req.params.nis;
 
-    var idbiodata = req.params.idbiodata;
-    var password = req.params.password;
-
-    connection.query('SELECT * FROM pengguna WHERE id_biodata = ?',
-        [idbiodata],
+    connection.query('SELECT * FROM siswa WHERE nis = ?',
+        [nis],
         function (error, rows, fields) {
             if (error) {
-                response.forbidden(console.log(error), res)
+                response.servererror(console.log(error), res)
             } else {
                 response.ok(rows, res)
             }
@@ -41,17 +39,16 @@ exports.Detail = function (req, res) {
     );
 };
 
-// LOGIN DATA
-exports.Login = function (req, res) {
+// COUNT YEARLY
+exports.Yearly = function (req, res) {
+    var jk = req.params.jk;
+    var tahun = req.params.tahun;
 
-    var idbiodata = req.params.idbiodata;
-    var password = req.params.password;
-
-    connection.query('SELECT * FROM pengguna WHERE id_biodata = ? AND password = ?',
-        [idbiodata, password],
+    connection.query('SELECT COUNT(nis) AS jumlah FROM siswa WHERE idjenis_kelamin = ? AND tahun = ?',
+        [jk, tahun],
         function (error, rows, fields) {
             if (error) {
-                response.forbidden(console.log(error), res)
+                response.servererror(console.log(error), res)
             } else {
                 response.ok(rows, res)
             }

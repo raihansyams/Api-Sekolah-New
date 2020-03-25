@@ -12,9 +12,9 @@ var connection = require('../utils/connection');
 // |- Hapus Data
 // |- Custom Data
 
-// LIST DATA PENGGUNA
+// LIST DATA PEGAWAI
 exports.List = function (req, res) {
-    connection.query('SELECT * FROM pengguna', function (error, rows, fields) {
+    connection.query('SELECT * FROM jadwal_pelajaran', function (error, rows, fields) {
         if (error) {
             response.servererror(console.log(error), res)
         } else {
@@ -23,17 +23,15 @@ exports.List = function (req, res) {
     });
 };
 
-//DETAIL DATA
+// DETAIL DATA PEGAWAI
 exports.Detail = function (req, res) {
+    var idjadwal = req.params.idjadwal;
 
-    var idbiodata = req.params.idbiodata;
-    var password = req.params.password;
-
-    connection.query('SELECT * FROM pengguna WHERE id_biodata = ?',
-        [idbiodata],
+    connection.query('SELECT * FROM jadwal_pelajaran WHERE idjadwal_pelajaran = ?',
+        [idjadwal],
         function (error, rows, fields) {
             if (error) {
-                response.forbidden(console.log(error), res)
+                response.servererror(console.log(error), res)
             } else {
                 response.ok(rows, res)
             }
@@ -41,17 +39,15 @@ exports.Detail = function (req, res) {
     );
 };
 
-// LOGIN DATA
-exports.Login = function (req, res) {
+//JADWAL HARI INI
+exports.Day = function (req, res) {
+    var idhari = req.params.idhari;
 
-    var idbiodata = req.params.idbiodata;
-    var password = req.params.password;
-
-    connection.query('SELECT * FROM pengguna WHERE id_biodata = ? AND password = ?',
-        [idbiodata, password],
+    connection.query('SELECT * FROM jadwal_pelajaran WHERE idhari = ?',
+        [idhari],
         function (error, rows, fields) {
             if (error) {
-                response.forbidden(console.log(error), res)
+                response.servererror(console.log(error), res)
             } else {
                 response.ok(rows, res)
             }
